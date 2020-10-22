@@ -13,7 +13,7 @@
         </div>
         <img src="{{ asset('icons/chart.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
-          <a type="button" class="btn btn-lg btn-primary" href="#">Mulai</a>
+          <a type="button" class="btn btn-lg btn-primary" href="{{ route('chart.create') }}">Mulai</a>
         </div>
       </div>
       <div class="card mb-4 shadow-sm">
