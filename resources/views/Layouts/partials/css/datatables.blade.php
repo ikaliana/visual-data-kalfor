@@ -1,0 +1,1 @@
+<link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
