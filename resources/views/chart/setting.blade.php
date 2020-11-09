@@ -8,6 +8,9 @@
 		color: unset;
 		background-color: unset;
 	}
+	.custom-select {
+		font-size: 0.7875rem;
+	}
 </style>
 @endsection
 
@@ -46,7 +49,7 @@
 						<div class="col-sm-9">
 							<select class="form-control form-control-sm" id="selectx">
 								@foreach($columns as $col)
-					            <option value="{{ $col }}">{{ $col }}</option>
+					            <option value="{{ $col['title'] }}">{{ $col['title'] }}</option>
 					            @endforeach
 							</select>
 						</div>
@@ -54,30 +57,36 @@
 					<div class="form-group row mb-1">
 						<label for="selecty" class="col-sm-3 col-form-label form-control-sm">Data</label>
 						<div class="col-sm-9">
-							<select class="form-control form-control-sm" id="selecty" name="selecty" multiple="multiple"></select>
+							<select class="form-control form-control-sm" id="selecty" name="selecty" multiple="multiple">
+								@foreach($columns as $col)
+									@if($col['type'] == 'numeric')
+					            <option value="{{ $col['title'] }}">{{ $col['title'] }}</option>
+					            	@endif
+					            @endforeach
+							</select>
+						</div>
+					</div>
+					<div class="form-group row mb-1">
+						<!-- <label for="data-label" class="col-sm-3 col-form-label form-control-sm"></label> -->
+						<div class="col-sm-12">
+							<div class="custom-control custom-switch">
+		                        <input type="checkbox" class="custom-control-input" id="chk-judul" checked="checked">
+		                        <label class="custom-control-label form-control-sm" for="chk-judul">Tampilkan judul di grafik</label>
+		                    </div>
 						</div>
 					</div>
 					<div class="form-group row mb-1">
 						<label for="data-label" class="col-sm-3 col-form-label form-control-sm">Judul</label>
 						<div class="col-sm-9">
-							<div class="custom-control custom-switch">
-		                        <input type="checkbox" class="custom-control-input" id="chk-judul" checked="checked">
-		                        <label class="custom-control-label form-control-sm" for="chk-judul">Tampilkan judul</label>
-		                    </div>
+							<input class="form-control form-control-sm" type="text" placeholder="[Isi judul grafik disini]" id="data-label">
 						</div>
 					</div>
 					<div class="form-group row mb-1">
-						<label for="data-label" class="col-sm-3 col-form-label form-control-sm"></label>
-						<div class="col-sm-9">
-							<input class="form-control form-control-sm" type="text" placeholder="Data label" id="data-label">
-						</div>
-					</div>
-					<div class="form-group row mb-1">
-						<label for="data-label" class="col-sm-3 col-form-label form-control-sm">Legend</label>
-						<div class="col-sm-9">
+						<!-- <label for="data-label" class="col-sm-3 col-form-label form-control-sm">Legend</label> -->
+						<div class="col-sm-12">
 							<div class="custom-control custom-switch">
 		                        <input type="checkbox" class="custom-control-input" id="chk-legend" checked="checked">
-		                        <label class="custom-control-label form-control-sm" for="chk-legend">Tampilkan legend</label>
+		                        <label class="custom-control-label form-control-sm" for="chk-legend">Tampilkan legend di grafik</label>
 		                    </div>
 						</div>
 					</div>
@@ -93,8 +102,7 @@
 						</div>
 					</div>
 				</form>
-				<br>
-				<button type="button" class="btn btn-primary btn-sm btn-chart-preview float-right">Pratinjau</button>
+				<button type="button" class="btn btn-primary btn-sm btn-chart-preview float-right mt-3">Pratinjau</button>
 			</div>
 		</div>
 	</div>
