@@ -30,17 +30,6 @@ class ChartService {
         return view('chart.upload', ['code' => $code, 'datasource' => $datasource]);
     }
 
-    public function PrepareFolder($path)
-    {
-        if(file_exists($path)) {
-            $fs = new Filesystem;
-            $fs->cleanDirectory($path);
-        }
-        else {
-            mkdir($path, 0777); 
-        }
-    }
-
     public function GetOriginFile($code)
     {
         $path = storage_path($this->default_path.$code.'/');
@@ -77,14 +66,28 @@ class ChartService {
         return redirect()->route('chart.check.get', [$code]);
     }
 
+    public function PrepareFolder($code)
+    {
+        $path = storage_path($this->default_path.$code.'/');
+
+        if(file_exists($path)) {
+            $fs = new Filesystem;
+            $fs->cleanDirectory($path);
+        }
+        else {
+            mkdir($path, 0777); 
+        }
+
+        return $path;
+    }
+
     public function UploadFile(Request $request, $code)
     {
     	$file = $request->file('file');
         $extension = $file->getClientOriginalExtension();
         $filename = $this->default_file_name.'.'.$extension;
-        $path = storage_path($this->default_path.$code.'/');
-
-        $this->PrepareFolder($path);
+        // $path = storage_path($this->default_path.$code.'/');
+        $path = $this->PrepareFolder($code);
 
         $file->move($path, $filename);
 
@@ -107,29 +110,18 @@ class ChartService {
         $data = $obj;
 
         return $this->SaveDataAndRedirect($data,$code);
-        //save data to file json
-        // $data_file = $path.$this->data_file_name;
-        // file_put_contents($data_file, json_encode($data, JSON_PRETTY_PRINT));
-
-        // return redirect()->route('chart.check.get', [$code]);
     }
 
     public function UploadDataset(Request $request, $code)
     {
-        $path = storage_path($this->default_path.$code.'/');
-        
-        $this->PrepareFolder($path);
+        // $path = storage_path($this->default_path.$code.'/');
+        $path = $this->PrepareFolder($code);
 
         $ds_id = $request->ds_id;
         $ds = Datasource::find($ds_id);
         $data = DB::select($ds->query);
 
         return $this->SaveDataAndRedirect($data,$code);
-        //save data to file json
-        // $data_file = $path.$this->data_file_name;
-        // file_put_contents($data_file, json_encode($data, JSON_PRETTY_PRINT));
-
-        // return redirect()->route('chart.check.get', [$code]);
     }
 
     public function ManualData(Request $request, $code)
@@ -163,12 +155,9 @@ class ChartService {
 
         $data = $obj;
 
+        // $path = storage_path($this->default_path.$code.'/');
+        $path = $this->PrepareFolder($code);
         return $this->SaveDataAndRedirect($data,$code);
-        //save data to file json
-        // $data_file = $path.$this->data_file_name;
-        // file_put_contents($data_file, json_encode($data, JSON_PRETTY_PRINT));
-
-        // return redirect()->route('chart.check.get', [$code]);
     }
 
     public function UploadData(Request $request, $code)
@@ -181,13 +170,6 @@ class ChartService {
 
     }
 
-    public function GetCheckData(Request $request, $code)
-    {
-        $path = storage_path($this->default_path.$code.'/');
-        $data_file = $path.$this->data_file_name;
-
-    }
-
     public function SaveCheckedData(Request $request, $code)
     {
     	$str_columns = $request->columns;
@@ -197,7 +179,7 @@ class ChartService {
 		$obj = [];
 		if(count($data) > 0) {
 			// convert to json format
-			for ($i=1; $i<count($data); $i++){
+			for ($i=0; $i<count($data); $i++){
 				$tmp = [];
 				foreach ($columns as $column_index => $column){
 					$tmp[$column] = $data[$i][$column_index];
@@ -229,11 +211,17 @@ class ChartService {
     	return redirect()->route('chart.publish', [$code]);
     }
 
+    public function OpenJsonFile($filename)
+    {
+        return (file_exists($filename)) ? json_decode(file_get_contents($filename), true) : null;
+    }
+
     public function GetChartData($code)
     {
     	$path = storage_path($this->default_path.$code.'/');
 		$data_file = $path.$this->data_file_name;
-		$data = json_decode(file_get_contents($data_file), true);
+        $data = $this->OpenJsonFile($data_file);
+		// $data = json_decode(file_get_contents($data_file), true);
 
 		return $data;
     }
@@ -242,7 +230,8 @@ class ChartService {
     {
     	$path = storage_path($this->default_path.$code.'/');
     	$setting_file = $path.$this->chart_options_file_name;
-    	$chart_settings = json_decode(file_get_contents($setting_file), true);
+        $chart_settings = $this->OpenJsonFile($setting_file);
+    	// $chart_settings = json_decode(file_get_contents($setting_file), true);
 
     	return $chart_settings;
     }
