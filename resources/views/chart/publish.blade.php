@@ -7,28 +7,35 @@
 @section('content')
   
 <!-- Page header -->
-<p class="h1 mt-3">Chart</p>
+<!-- <p class="h1 mt-3">Chart</p> -->
 
 <!-- add tab header here -->
 
 <!--content-->
-<div class="row mb-3">
+<div class="row mb-3 mt-3">
 	<div class="col-md">
 		<div class="card border-secondary">
-			<!-- <div class="card-header"></div> -->
+			<div class="card-header">
+				<!-- <p class="h4 d-inline">Chart</p> -->
+				<div class="float-right">
+					<a download="chart.png" class="btn btn-sm btn-primary btn-save">Download</a>
+					<button type="button" class="btn btn-sm btn-primary btn-setting">Ubah setting</button>
+					<button type="button" class="btn btn-sm btn-primary btn-data">Ubah data</button>
+				</div>
+			</div>
 			<div class="card-body">
 				<canvas id="chart-preview"></canvas>
 			</div>
-			<div class="card-footer text-center">
+			<!-- <div class="card-footer text-center">
 				<a download="chart.png" class="btn btn-primary btn-save">Download</a>
 				<button type="button" class="btn btn-primary btn-setting">Ubah setting</button>
 				<button type="button" class="btn btn-primary btn-data">Ubah data</button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<div class="col-md-3 single-stats">
 		<div class="card mb-3 border-secondary">
-			<div class="card-header">
+			<div class="card-header font-weight-bold">
 				Statistik <span id="data-label"></span>
 			</div>
 			<ul class="list-group list-group-flush">
@@ -53,21 +60,21 @@
 <div id="template-multi-stats" class="d-none">
 	<div class="col-md mb-3">
 		<div class="card border-secondary">
-			<div class="card-header">
+			<div class="card-header font-weight-bold">
 				Statistik <span id="data-label">STATLABEL</span>
 			</div>
 			<ul class="list-group list-group-horizontal list-group-flush">
-				<li class="list-group-item d-flex justify-content-between align-items-center col-md flex-fill border-0">
-					Max <span class="badge badge-light text-primary">STATMAX</span>
+				<li class="list-group-item border-0">
+					Max <span class="badge badge-light ml-1"><h6 class="mb-0 text-primary">STATMAX</h6></span>
 				</li>
-				<li class="list-group-item d-flex justify-content-between align-items-center col-md flex-fill border-0">
-					Min <span class="badge badge-light text-primary">STATMIN</span>
+				<li class="list-group-item border-0">
+					Min <span class="badge badge-light ml-1"><h6 class="mb-0 text-primary">STATMIN</h6></span>
 				</li>
-				<li class="list-group-item d-flex justify-content-between align-items-center col-md flex-fill border-0">
-					Mean <span class="badge badge-light text-primary">STATMEAN</span>
+				<li class="list-group-item border-0">
+					Mean <span class="badge badge-light ml-1"><h6 class="mb-0 text-primary">STATMEAN</h6></span>
 				</li>
-				<li class="list-group-item d-flex justify-content-between align-items-center col-md flex-fill border-0">
-					Median <span class="badge badge-light text-primary">STATMEDIAN</span>
+				<li class="list-group-item border-0">
+					Median <span class="badge badge-light ml-1"><h6 class="mb-0 text-primary">STATMEDIAN</h6></span>
 				</li>
 			</ul>		
 		</div>
@@ -89,16 +96,19 @@
 		},
 		sum: function(array) {
 			var num = 0;
-			for (var i = 0, l = array.length; i < l; i++) num += array[i];
+			for (var i = 0, l = array.length; i < l; i++) num += eval(array[i]);
 			return num;
 		},
 		mean: function(array) {
-			return (arr.sum(array) / array.length).toFixed(2);
+			var num = arr.sum(array) / array.length;
+			// return num;
+			return Math.round(num * 100) / 100;
+			//return (arr.sum(array) / array.length).toFixed(2);
 		},
 		median: function(array) {
-			array.sort(function(a, b) { return a - b; });
+			array.sort(function(a, b) { return eval(a) - eval(b); });
 			var mid = array.length / 2;
-			return mid % 1 ? array[mid - 0.5] : (array[mid - 1] + array[mid]) / 2;
+			return mid % 1 ? eval(array[mid - 0.5]) : (eval(array[mid - 1]) + eval(array[mid])) / 2;
 		},
 	};
 </script>
@@ -129,6 +139,7 @@
 	else {
 		// var template = $("#template-multi-stats").html();
 
+		var counter = 0;
 		$.each(ds,function(i,d) {
 			var tmp = $("#template-multi-stats").html();
 			var tmpdata = [...d.data];
@@ -140,6 +151,11 @@
 			tmp = tmp.replace("STATMEDIAN",arr.median(tmpdata));
 
 			$(".multi-stats").append(tmp);
+			counter++;
+			if(counter == 2) {
+				counter = 0;
+				$(".multi-stats").append('<div class="w-100"></div>');
+			}
 		});
 	}
 
