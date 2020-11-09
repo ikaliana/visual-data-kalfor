@@ -60,13 +60,27 @@ class ChartController extends Controller
     {
     	// $data = $this->service->LoadOriginDataJson($request, $code);
 		$data = $this->service->GetChartData($code);
+		$options = $this->service->GetChartOptions($code);
 
     	$columns = [];
-    	foreach($data[0] as $key => $val) {
-    		array_push($columns, $key);
-    	}
+		if(count($data) > 0) {
+			$head = array_keys($data[0]);
+			$sample = array_values($data[0]);
 
-		return view('chart.setting', compact('code','columns','data'));
+			for($i = 0; $i < count($head); $i++) {
+				$tmp = [];
+				$tmp['title'] = $head[$i];
+				$tmp['type'] = (is_numeric($sample[$i])) ? 'numeric' : 'text';
+
+				array_push($columns,$tmp);
+			}
+		}
+		// return $columns;
+    	// foreach($data[0] as $key => $val) {
+    	// 	array_push($columns, $key);
+    	// }
+
+		return view('chart.setting', compact('code','columns','data','options'));
     }
 
     public function setting_post(Request $request, $code)
