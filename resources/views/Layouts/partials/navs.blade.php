@@ -11,13 +11,13 @@
       <ul class="navbar-nav mr-auto ml-auto">
       @if(!Request::is('/'))
         <li class="nav-item active">
-          <a class="nav-link" href="{{ route('chart.create') }}">Chart</a>
+          <a class="nav-link" href="{{ route('chart.create') }}">Grafik</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Map</a>
+          <a class="nav-link" href="#">Peta</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Table</a>
+          <a class="nav-link" href="#">Tabel</a>
         </li>
       @endif
       </ul>
