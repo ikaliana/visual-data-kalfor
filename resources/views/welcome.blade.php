@@ -9,7 +9,7 @@
     <div class="card-deck mb-3 text-center">
       <div class="card mb-4 shadow-sm">
         <div class="card-header bg-info text-white">
-          <h4 class="my-0 font-weight-normal">Chart</h4>
+          <h4 class="my-0 font-weight-normal">Grafik</h4>
         </div>
         <img src="{{ asset('icons/chart.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
@@ -18,7 +18,7 @@
       </div>
       <div class="card mb-4 shadow-sm">
         <div class="card-header bg-info text-white">
-          <h4 class="my-0 font-weight-normal">Map</h4>
+          <h4 class="my-0 font-weight-normal">Peta</h4>
         </div>
         <img src="{{ asset('icons/map.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
@@ -27,7 +27,7 @@
       </div>
       <div class="card mb-4 shadow-sm">
         <div class="card-header bg-info text-white">
-          <h4 class="my-0 font-weight-normal">Table</h4>
+          <h4 class="my-0 font-weight-normal">Tabel</h4>
         </div>
         <img src="{{ asset('icons/table.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
