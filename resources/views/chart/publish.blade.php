@@ -55,10 +55,10 @@
 		</div>
 	</div>
 </div>
-<div class="multi-stats row"></div>
+<div class="multi-stats row row-cols-md-2"></div>
 
 <div id="template-multi-stats" class="d-none">
-	<div class="col-md mb-3">
+	<div class="col mb-3">
 		<div class="card border-secondary">
 			<div class="card-header font-weight-bold">
 				Statistik <span id="data-label">STATLABEL</span>
@@ -116,6 +116,7 @@
 <script type="text/javascript">
 	var options = JSON.parse('@json($chart_settings)');
 
+	var chart_type = options.type;
 	var ds = options.data.datasets;
 
 	if(ds.length == 1) {
@@ -127,36 +128,58 @@
 		$(".multi-stats").show();
 	}
 
-	if(ds.length == 1) {
-		$("#data-label").html(ds[0].label);
+	if (chart_type == "scatter") {
+		var ds_copy = {};
 
-		var tmpdata = [...ds[0].data];
-		$(".max-value").html(arr.max(tmpdata));
-		$(".min-value").html(arr.min(tmpdata));
-		$(".mean-value").html(arr.mean(tmpdata));
-		$(".median-value").html(arr.median(tmpdata));
-	}
-	else {
-		// var template = $("#template-multi-stats").html();
-
-		var counter = 0;
 		$.each(ds,function(i,d) {
+			var label_x = d.label_source[0];
+			if((typeof ds_copy[label_x]) === "undefined") {
+				ds_copy[label_x] = d.data.map(a => a.x);
+			}
+
+			var label_y = d.label_source[1];
+			if((typeof ds_copy[label_y]) === "undefined") {
+				ds_copy[label_y] = d.data.map(a => a.y);
+			}
+		});
+
+		$.each(ds_copy,function(i,d) {
 			var tmp = $("#template-multi-stats").html();
-			var tmpdata = [...d.data];
-			// console.log(tmpdata);
-			tmp = tmp.replace("STATLABEL",d.label);
+			var tmpdata = [...d];
+
+			tmp = tmp.replace("STATLABEL",i);
 			tmp = tmp.replace("STATMAX",arr.max(tmpdata));
 			tmp = tmp.replace("STATMIN",arr.min(tmpdata));
 			tmp = tmp.replace("STATMEAN",arr.mean(tmpdata));
 			tmp = tmp.replace("STATMEDIAN",arr.median(tmpdata));
 
 			$(".multi-stats").append(tmp);
-			counter++;
-			if(counter == 2) {
-				counter = 0;
-				$(".multi-stats").append('<div class="w-100"></div>');
-			}
 		});
+	}
+	else {
+		if(ds.length == 1) {
+			$("#data-label").html(ds[0].label);
+
+			var tmpdata = [...ds[0].data];
+			$(".max-value").html(arr.max(tmpdata));
+			$(".min-value").html(arr.min(tmpdata));
+			$(".mean-value").html(arr.mean(tmpdata));
+			$(".median-value").html(arr.median(tmpdata));
+		}
+		else {
+			$.each(ds,function(i,d) {
+				var tmp = $("#template-multi-stats").html();
+				var tmpdata = [...d.data];
+				// console.log(tmpdata);
+				tmp = tmp.replace("STATLABEL",d.label);
+				tmp = tmp.replace("STATMAX",arr.max(tmpdata));
+				tmp = tmp.replace("STATMIN",arr.min(tmpdata));
+				tmp = tmp.replace("STATMEAN",arr.mean(tmpdata));
+				tmp = tmp.replace("STATMEDIAN",arr.median(tmpdata));
+
+				$(".multi-stats").append(tmp);
+			});
+		}
 	}
 
 	var myChart;
