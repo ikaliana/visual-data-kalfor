@@ -7,9 +7,8 @@
 @section('content')
   
 <!-- Page header -->
-<p class="h1 mt-3">Pilih sumber data</p>
-
-<!-- add tab header here -->
+<!-- <p class="h1 mt-3">Pilih sumber data</p> -->
+@include('chart.partials.progress')
 
 <div class="card mb-3">
     <div class="card-header">
@@ -63,7 +62,7 @@
         </div>
     </div>
 </div>
-<button type="button" class="btn btn-primary" id="next-process">Selanjutnya</button>
+<!-- <button type="button" class="btn btn-primary" id="next-process">Selanjutnya</button> -->
 
 <div style="display: none">
     <form id="submit-form" action="{{ route('chart.upload.post', ['code' => $code]) }}" method="post" enctype="multipart/form-data">
@@ -82,6 +81,10 @@
 
 
 @section('js')
+<script type="text/javascript">
+    var progress_step = 1;
+</script>
+@include('chart.partials.progress_js')
 @include('Layouts.partials.js.jexcel')
 <script type="text/javascript">
     var active_tab = "nav-upload";
