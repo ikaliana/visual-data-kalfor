@@ -12,16 +12,15 @@
 @section('content')
   
 <!-- Page header -->
-<p class="h1 mt-3">Check data</p>
+<!-- <p class="h1 mt-3">Check data</p> -->
+@include('chart.partials.progress')
 
-<!-- add tab header here -->
-
-<div class="row">
+<div class="row mx-0">
     <div id="spreadsheet"></div>
 </div>
 
-<button type="button" class="btn btn-primary" id="prev-process">Sebelumnya</button>
-<button type="button" class="btn btn-primary" id="next-process">Selanjutnya</button>
+<!-- <button type="button" class="btn btn-primary" id="prev-process">Sebelumnya</button>
+<button type="button" class="btn btn-primary" id="next-process">Selanjutnya</button> -->
 
 <div style="display: none">
     <form id="submit-form" action="{{ route('chart.check.post', ['code' => $code]) }}" method="post" enctype="multipart/form-data">
@@ -35,6 +34,11 @@
 
 
 @section('js')
+<script type="text/javascript">
+    var progress_step = 2;
+</script>
+@include('chart.partials.progress_js')
+
 @include('Layouts.partials.js.jexcel')
 @include('Layouts.partials.js.datatables')
 
