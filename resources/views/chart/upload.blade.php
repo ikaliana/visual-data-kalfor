@@ -1,7 +1,13 @@
-@extends('layouts.master')
+@extends('Layouts.master')
 
 @section('css')
     @include('Layouts.partials.css.jexcel')
+    <style type="text/css">
+        div[class^="step-progress"] {
+            display: block;
+            padding-top: 12px;
+        }
+    </style>
 @endsection
 
 @section('content')
