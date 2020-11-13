@@ -1,11 +1,15 @@
-@extends('layouts.master')
+@extends('Layouts.master')
 
 @section('css')
-@include('Layouts.partials.css.jexcel')
-<style type="text/css">
-    .jexcel { width: unset; }
-</style>
-@include('Layouts.partials.css.datatables')
+    @include('Layouts.partials.css.jexcel')
+    <style type="text/css">
+        .jexcel { width: unset; }
+        div[class^="step-progress"] {
+            display: block;
+            padding-top: 12px;
+        }
+    </style>
+    @include('Layouts.partials.css.datatables')
 @endsection
 
 
