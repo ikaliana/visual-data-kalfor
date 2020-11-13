@@ -1,24 +1,39 @@
-@extends('layouts.master')
+@extends('Layouts.master')
 
 @section('css')
-<link href="{{ asset('css/chart.min.css') }}" rel="stylesheet">
-<link href="{{ asset('css/bootstrap-multiselect.min.css') }}" rel="stylesheet">
-<style type="text/css">
-	.dropdown-item.active, .dropdown-item:active {
-		color: unset;
-		background-color: unset;
-	}
-	.custom-select {
-		font-size: 0.7875rem;
-	}
-	.multiselect-native-select > .btn-group, .multiselect-container {
-		width: 100%;
-	}
+	<link href="{{ asset('css/chart.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/bootstrap-multiselect.min.css') }}" rel="stylesheet">
+	<style type="text/css">
+		.dropdown-item.active, .dropdown-item:active {
+			color: unset;
+			background-color: unset;
+		}
+		.custom-select {
+			font-size: 0.7875rem;
+		}
+		.multiselect-native-select > .btn-group, .multiselect-container {
+			width: 100%;
+		}
 
-	div[class^="scatter-row-"] {
-		height: 35px;
-	}
-</style>
+		div[class^="scatter-row-"] {
+			height: 35px;
+		}
+
+	    div[class^="step-progress"] {
+	        display: block;
+	        padding-top: 12px;
+	    }
+
+	    .btn-chart {
+	    	width: 128px;
+	    	height: 128px;
+	    }
+
+	    button.active {
+	    	background-color: #efefef !important;
+	    	color: #212529!important;
+	    }
+	</style>
 @endsection
 
 @section('content')
@@ -34,14 +49,43 @@
 			<div class="card-header">
 				Tipe grafik
 			</div>
-			<div class="card-body">
-				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="bar">Column</button>
+			<div class="card-body text-center">
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="bar">
+					<img src="{{ asset('icons/chart-column.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Column
+				</button>
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="horizontalBar">
+					<img src="{{ asset('icons/chart-bar.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Bar
+				</button>
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="line">
+					<img src="{{ asset('icons/chart-line.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Line
+				</button>
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="area">
+					<img src="{{ asset('icons/chart-area.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Area
+				</button>
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="pie">
+					<img src="{{ asset('icons/chart-pie.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Pie
+				</button>
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="doughnut">
+					<img src="{{ asset('icons/chart-doughnut.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Doughnut
+				</button>
+				<button type="button" class="btn btn-outline-light text-secondary btn-lg btn-chart border mx-1" data-type="scatter">
+					<img src="{{ asset('icons/chart-scatter.png') }}" class="rounded mx-auto d-block my-2" alt="Column" width="64">
+					Scatter
+				</button>
+
+				<!-- <button type="button" class="btn btn-primary btn-lg btn-chart" data-type="bar">Column</button>
 				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="horizontalBar">Bar</button>
 				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="line">Line</button>
 				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="area">Area</button>
 				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="pie">Pie</button>
 				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="doughnut">Doughnut</button>
-				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="scatter">Scatter</button>
+				<button type="button" class="btn btn-primary btn-lg btn-chart" data-type="scatter">Scatter</button> -->
 			</div>
 		</div>
 	</div>
@@ -176,7 +220,7 @@
 		</div>
 		<div class="card-footer">
 			<button type="button" class="btn btn-primary btn-sm btn-scatter-add" style="display: none">Tambah dataset</button>
-			<button type="button" class="btn btn-primary btn-sm btn-chart-preview float-right">Pratinjau</button>
+			<button type="button" class="btn btn-primary btn-sm btn-chart-preview float-right">Pratinjau <i class="fas fa-tv ml-1"></i></button>
 		</div>
 	</div>
 	<div class="card col px-0">
@@ -189,7 +233,7 @@
 	<div class="col-md">
 		<div class="card">
 			<div class="card-header text-right">
-				<button type="button" class="btn btn-primary btn-lg" id="btn-publish">Selesai & tampilkan &raquo;</button>
+				<button type="button" class="btn btn-primary btn-lg" id="btn-publish">Selesai & tampilkan <i class="fas fa-external-link-alt ml-2"></i></button>
 			</div>
 		</div>
 	</div>
