@@ -1,7 +1,7 @@
-@extends('layouts.master')
+@extends('Layouts.master')
 
 @section('css')
-<link href="{{ asset('css/chart.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/chart.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -18,9 +18,9 @@
 			<div class="card-header">
 				<!-- <p class="h4 d-inline">Chart</p> -->
 				<div class="float-right">
-					<a download="chart.png" class="btn btn-sm btn-primary btn-save">Download</a>
-					<button type="button" class="btn btn-sm btn-primary btn-setting">Ubah setting</button>
-					<button type="button" class="btn btn-sm btn-primary btn-data">Ubah data</button>
+					<a download="chart.png" class="btn btn-sm btn-primary btn-save"><i class="fas fa-file-download mr-1"></i> Download</a>
+					<button type="button" class="btn btn-sm btn-primary btn-setting"><i class="fas fa-sliders-h mr-1"></i> Ubah setting</button>
+					<button type="button" class="btn btn-sm btn-primary btn-data"><i class="fas fa-edit mr-1"></i> Ubah data</button>
 				</div>
 			</div>
 			<div class="card-body">
@@ -36,7 +36,7 @@
 	<div class="col-md-3 single-stats">
 		<div class="card mb-3 border-secondary">
 			<div class="card-header font-weight-bold">
-				Statistik <span id="data-label"></span>
+				<i class="fas fa-chart-line mr-1"></i> Statistik <span id="data-label"></span>
 			</div>
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item d-flex justify-content-between align-items-center col-md ">
@@ -61,7 +61,7 @@
 	<div class="col mb-3">
 		<div class="card border-secondary">
 			<div class="card-header font-weight-bold">
-				Statistik <span id="data-label">STATLABEL</span>
+				<i class="fas fa-chart-line mr-1"></i> Statistik <span id="data-label">STATLABEL</span>
 			</div>
 			<ul class="list-group list-group-horizontal list-group-flush">
 				<li class="list-group-item border-0">
