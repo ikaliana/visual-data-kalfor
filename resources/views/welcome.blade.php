@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('Layouts.master')
 
 @section('content')
   <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
@@ -13,7 +13,7 @@
         </div>
         <img src="{{ asset('icons/chart.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
-          <a type="button" class="btn btn-lg btn-primary" href="{{ route('chart.create') }}">Mulai</a>
+          <a type="button" class="btn btn-lg btn-primary" href="{{ route('chart.create') }}">Mulai <i class="fas fa-caret-square-right ml-2"></i></a>
         </div>
       </div>
       <div class="card mb-4 shadow-sm">
@@ -22,7 +22,7 @@
         </div>
         <img src="{{ asset('icons/map.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
-          <a type="button" class="btn btn-lg btn-primary" href="#">Mulai</a>
+          <a type="button" class="btn btn-lg btn-primary" href="#">Mulai <i class="fas fa-caret-square-right ml-2"></i></a>
         </div>
       </div>
       <div class="card mb-4 shadow-sm">
@@ -31,7 +31,7 @@
         </div>
         <img src="{{ asset('icons/table.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
-          <a type="button" class="btn btn-lg btn-primary" href="#">Mulai</a>
+          <a type="button" class="btn btn-lg btn-primary" href="#">Mulai <i class="fas fa-caret-square-right ml-2"></i></a>
         </div>
       </div>
     </div>            
