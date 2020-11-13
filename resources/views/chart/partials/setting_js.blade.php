@@ -3,10 +3,10 @@
 
 <script type="text/javascript">
 	$(".btn-chart").on("click", function(e) {
-		var btn = e.target;
+		var btn = this; //e.target;
 		current_type = $(btn).data("type");
 
-		// console.log($('a[data-toggle="tab"][aria-selected="true"]')[0]);
+		ResetButtonActive();
 		ResetChart();
 	});
 
@@ -195,6 +195,13 @@
 		else $(".btn-scatter-add").hide();
     }
 
+    function ResetButtonActive()
+    {
+    $(".btn-chart").removeClass("active");
+    $('button[data-type="' + current_type + '"]').addClass("active");
+    }
+
+
 </script>
 
 <script type="text/javascript">
@@ -344,5 +351,7 @@
     	$("#chk-legend").attr("checked",existing_options.options.legend.display).trigger("change");
     }
 
+    ResetButtonActive();
     var myChart = GenerateChart();
+
 </script>
