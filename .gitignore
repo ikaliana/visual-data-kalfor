@@ -4,6 +4,7 @@
 /storage/*.key
 /storage/framework
 /storage/file_repository/*
+/storage/shapefile/*
 /vendor
 .env
 .env.backup
