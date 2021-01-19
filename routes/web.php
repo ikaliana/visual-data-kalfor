@@ -24,6 +24,22 @@ Route::prefix('chart')->group(function () {
 	Route::get('publish/{code}', 'ChartController@publish')->name('chart.publish');
 });
 
+Route::prefix('map')->group(function () {
+	Route::get('create', 'MapController@create')->name('map.create');
+	Route::get('source/{code}', 'MapController@source')->name('map.source.list');
+	Route::post('source/{code}', 'MapController@source')->name('map.source.post');
+	Route::post('upload', 'MapController@upload')->name('map.source.upload');
+	Route::get('setting/{code}', 'MapController@setting')->name('map.setting.get');
+	Route::post('setting/{code}', 'MapController@setting')->name('map.setting.post');
+	Route::get('publish/{code}', 'MapController@publish')->name('map.publish');
+	Route::get('geojson', 'MapController@geojson')->name('map.geojson');
+	Route::get('legend', 'MapController@legend')->name('map.legend');
+});
+
+Route::get('login', 'SsoController@Login')->name('login');
+Route::get('logout', 'SsoController@Logout')->name('logout');
+Route::get('callback', 'SsoController@Callback');
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
