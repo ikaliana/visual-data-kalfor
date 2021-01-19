@@ -22,7 +22,7 @@
         </div>
         <img src="{{ asset('icons/map.png') }}" class="rounded mx-auto d-block mt-3" alt="Chart" >
         <div class="card-body">
-          <a type="button" class="btn btn-lg btn-primary" href="#">Mulai <i class="fas fa-caret-square-right ml-2"></i></a>
+          <a type="button" class="btn btn-lg btn-primary" href="{{ route('map.create') }}">Mulai <i class="fas fa-caret-square-right ml-2"></i></a>
         </div>
       </div>
       <div class="card mb-4 shadow-sm">
