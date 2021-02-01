@@ -24,7 +24,12 @@
         	$totals1 = $data["total"];
         @endphp
 
-        <h6 class="mt-3">Agregat dataset {{ $data["folder"] }}</h6>
+        <h6 class="mt-3">Agregat dataset <strong>{{ $data["folder"] }}</strong></h6>
+        <div class="text-right">
+            <a download="mapdata.xlsx" class="btn btn-sm btn-primary btn-download" data-folder='{{ $data["folder"] }}' data-kode="map" target="_blank">
+                <i class="fas fa-file-download mr-1"></i> Map data
+            </a>
+        </div>
         <table class="table table-striped mb-4">
             <thead>
                 <tr>
@@ -88,6 +93,22 @@
     var baseMaps = { "OpenStreetMap": baseLayer };
     var overlayMaps  = { "Kawasan Hutan": layerKLHK };
     var cIndex = 0;
+
+    function onEachFeatureDataset(f,l) {
+        var html1 = document.createElement('p');
+        var isi='<h6>Atribut</h6>';
+        for(var index in f.properties) {
+            var isiProperties;
+            if ((f.properties[index]==null) || (f.properties[index]=='')) {
+                isiProperties='-';
+            } else {
+                isiProperties=f.properties[index];
+            }
+            isi +=  index +' : <b>'+isiProperties+'</b></br>';
+        }
+        html1.innerHTML = isi;
+        l.bindPopup(html1);
+    }
     
     $.each(dataset, function(i,data) {
     	
@@ -102,7 +123,7 @@
 
         $.getJSON("{{ route('map.geojson') }}", { foldername: data.folder }, function(result){
 
-            L.geoJSON(result, { style: style1 }).addTo(layer1);
+            L.geoJSON(result, { style: style1, onEachFeature: onEachFeatureDataset }).addTo(layer1);
 
         }).done(function() {
             mymap.spin(false);
@@ -158,6 +179,34 @@
 		exportOnly: true
 	}).addTo(mymap);
 	
+    $(".btn-download").on("click", function() {
+        mymap.spin(true);
+        $(this).prop( "disabled", true );
+
+        var mapfolder = $(this).data("folder");
+        var kodebutton = $(this).data("kode");
+        var download_url = "{{ route('map.download') }}" + "?foldername=" + mapfolder;
+
+        if(kodebutton == "map") {
+            $.ajax({
+                url: download_url, 
+                datatype: 'binary', 
+                xhrFields: { 'responseType': 'blob' },
+                success: function(data, status, xhr) {
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(data);
+                    link.download = 'mapdata.xlsx';
+                    link.click();
+                },
+                complete: function() {
+                    mymap.spin(false);
+                    $(this).prop( "disabled", false );
+                }
+            });            
+        }
+
+    });
+
 </script>
 
 @endsection
