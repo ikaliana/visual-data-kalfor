@@ -61,4 +61,9 @@ class MapController extends Controller
     {
     	return $this->service->getLegend();
     }
+
+    public function download(Request $request)
+    {
+        return $this->service->download($request);
+    }
 }
