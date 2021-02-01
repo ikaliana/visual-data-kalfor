@@ -10,6 +10,8 @@ use RarArchive;
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
+use App\Exports\MapExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MapService 
 {
@@ -23,8 +25,10 @@ class MapService
 			$tmp=[];
 			$tmp['nama']=basename($dir);
 			$pathTemp2 = $dir."/dataSource.txt";
-			$tmp['deskripsi']=file_get_contents($pathTemp2);
-		    array_push($listShapefile,$tmp);
+            if(file_exists($pathTemp2)) {
+                $tmp['deskripsi']=file_get_contents($pathTemp2);
+                array_push($listShapefile,$tmp);
+            }
 		}
 
 		return view('map.source', compact('listShapefile','code'));
@@ -57,11 +61,13 @@ class MapService
 				$zip->extractTo($pathTemp1);
 			  	$zip->close();
 			} else {
-			  	$pesan= '<h5><span class="badge badge-warning">Gagal</span></h5><span>Maaf, file gagal terupload. Silahkan ulang proses atau hubungi administrator. tes tes</span>';
+			  	if(file_exists($pathTemp1)) File::deleteDirectory($pathTemp1);
+                $pesan= '<h5><span class="badge badge-warning">Gagal</span></h5><span>Maaf, file gagal terupload. Silahkan ulang proses atau hubungi administrator. tes tes</span>';
 			  	return $pesan;
 			}
         } else {
-        	$pesan= '<h5><span class="badge badge-warning">Gagal</span></h5><span>Maaf, file yang anda upload bukan file compresi (zip/rar).</span>';
+        	if(file_exists($pathTemp1)) File::deleteDirectory($pathTemp1);
+            $pesan= '<h5><span class="badge badge-warning">Gagal</span></h5><span>Maaf, file yang anda upload bukan file compresi (zip/rar).</span>';
 		  	exit($pesan);
         }
 
@@ -156,7 +162,8 @@ class MapService
 
     public function agregat(Request $request,$code) {
     	
-    	$key = "aggregatdata.".$code;
+    	set_time_limit(0);
+        $key = "aggregatdata.".$code;
     	
     	if(!session()->has($key)) return redirect()->route('map.source.list', [$code]);
 
@@ -246,6 +253,7 @@ class MapService
 
         try {
 
+            ini_set('memory_limit', '1024M');
             $filename1 = storage_path().'/shapefile/'.$foldername.'/dataSource.shp';
             //return $filename1;
             $Shapefile = new ShapefileReader($filename1,[
@@ -266,12 +274,12 @@ class MapService
                 }
                 if ($nRecord<>$totalRecord) {
                     if ($nRecord==1){
-                        $geojson = '['.$geojson.$Geometry->getGeoJSON(false,false).',';
+                        $geojson = '['.$geojson.$Geometry->getGeoJSON(false,true).',';
                     } else {
-                        $geojson = $geojson.$Geometry->getGeoJSON(false,false).',';
+                        $geojson = $geojson.$Geometry->getGeoJSON(false,true).',';
                     }
                 } else {
-                    $geojson = $geojson.$Geometry->getGeoJSON(false,false).']';
+                    $geojson = $geojson.$Geometry->getGeoJSON(false,true).']';
                 }
             }
             return $geojson;
@@ -288,5 +296,44 @@ class MapService
     public function getLegend(){
         $json = file_get_contents('http://geoportal.menlhk.go.id/arcgis/rest/services/KLHK/Penetapan_Kawasan_Hutan/MapServer/legend?f=pjson');
         return $json;
+    }
+
+    public function download(Request $request) {
+        $foldername = $request->input('foldername');
+
+        try {
+
+            ini_set('memory_limit', '1024M');
+            $filename1 = storage_path().'/shapefile/'.$foldername.'/dataSource.shp';
+            //return $filename1;
+            $Shapefile = new ShapefileReader($filename1,[
+                    Shapefile::OPTION_POLYGON_CLOSED_RINGS_ACTION => Shapefile::ACTION_IGNORE,
+            ]);
+
+            $dataArray = [];
+
+            while ($Geometry = $Shapefile->fetchRecord()) {
+                // Skip the record if marked as "deleted"
+                if ($Geometry->isDeleted()) {
+                    continue;
+                }
+
+                array_push($dataArray,$Geometry->getDataArray());
+                //print_r($Geometry->getDataArray());
+            }
+
+            //return array_keys($dataArray[0]);
+            //return $dataArray;
+            $export = new MapExport($dataArray);
+
+            return Excel::download($export, 'mapdata.xlsx');
+
+        } catch (ShapefileException $e) {
+            // Print detailed error information
+            $pesan= "Error Type: " . $e->getErrorType()
+                    . "\nMessage: " . $e->getMessage()
+                    . "\nDetails: " . $e->getDetails();
+            return $pesan;
+        }
     }
 }
