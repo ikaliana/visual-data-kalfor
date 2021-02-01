@@ -34,6 +34,7 @@ Route::prefix('map')->group(function () {
 	Route::get('publish/{code}', 'MapController@publish')->name('map.publish');
 	Route::get('geojson', 'MapController@geojson')->name('map.geojson');
 	Route::get('legend', 'MapController@legend')->name('map.legend');
+	Route::get('download', 'MapController@download')->name('map.download');
 });
 
 Route::get('login', 'SsoController@Login')->name('login');
